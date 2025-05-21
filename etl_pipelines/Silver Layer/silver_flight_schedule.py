@@ -31,30 +31,41 @@ silver_layer_flight_schedule_df=bronze_layer_flight_schedule_filtered_df\
 
 # COMMAND ----------
 
-#handling days of week
-from pyspark.sql.functions import when, col
+from pyspark.sql.functions import split, explode, trim
 
-days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-
-for day in days:
-    silver_layer_flight_schedule_df = silver_layer_flight_schedule_df.withColumn(day[:3], when(col("dayOfWeek").contains(day), 1).otherwise(0))
-
-# COMMAND ----------
-
-display(silver_layer_flight_schedule_df)
+# Split the string by comma and explode into rows
+silver_layer_flight_schedule_df_days = silver_layer_flight_schedule_df.withColumn("day", explode(split("dayOfWeek", ","))) \
+            .withColumn("day", trim(col("day"))) \
+            .drop("dayOfWeek")
 
 # COMMAND ----------
 
-silver_layer_flight_schedule_df.count()
+silver_layer_flight_schedule_df_days.count()
 
 # COMMAND ----------
 
-silver_layer_flight_schedule_df.write.saveAsTable("silver_lyr.flight_schedule",mode="overwrite")
+display(silver_layer_flight_schedule_df_days)
+
+# COMMAND ----------
+
+silver_layer_flight_schedule_df_days.write.saveAsTable("silver_lyr.flight_schedule",mode="overwrite")
 
 # COMMAND ----------
 
 # MAGIC %sql
 # MAGIC select count(*) from silver_lyr.flight_schedule
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC
+# MAGIC select origin,destination,count(flightNumber) as flight_schedules from silver_lyr.flight_schedule group by origin,destination;
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC
+# MAGIC select origin,destination,count(day) as flight_schedules from silver_lyr.flight_schedule group by origin,destination ;
 
 # COMMAND ----------
 
