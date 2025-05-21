@@ -7,6 +7,7 @@ Welcome to the official repository for Team **Data Dribblers**' submission to th
 
 ## 🧠 Problem Statement
 
+Leverage your own data to solve a real life business problem in a specific industry.
 
 ## 🛠️ Tools & Technologies
 
