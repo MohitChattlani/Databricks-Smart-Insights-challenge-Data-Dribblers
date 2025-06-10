@@ -63,7 +63,8 @@ An AI-driven chatbot that:
 
 ## 🎥 Demo Video
 
-Watch our project walkthrough here: 
+Watch our project walkthrough here:
+[Smart Aviation Insights: AI-Powered Dashboards & Chatbot for India's Flight Data | Data Dribblers](https://www.youtube.com/watch?v=E0BFVL5NxB0)
 
 ## 👥 Team Members
 
